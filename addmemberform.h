@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QStringListModel>
-
+#include <QSqlDatabase>
 
 namespace Ui {
 class AddMemberForm;
@@ -14,12 +14,13 @@ class AddMemberForm : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddMemberForm(QWidget *parent = 0);
+    explicit AddMemberForm(QSqlDatabase* database,QWidget *parent = 0);
 
     void initializeModels();
     void setupModels();
     void setupMeritalStatusComboBoxModel();
     void clearForm();
+    bool addMember();
     ~AddMemberForm();
 
 private slots:
@@ -29,6 +30,7 @@ private slots:
 
 private:
     Ui::AddMemberForm *ui;
+    QSqlDatabase* db;
     QStringListModel* merital_status_model;
 };
 

@@ -2,12 +2,16 @@
 #include "ui_addmemberform.h"
 #include <QStringList>
 #include <QString>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QMessageBox>
 
-AddMemberForm::AddMemberForm(QWidget *parent) :
+AddMemberForm::AddMemberForm(QSqlDatabase *database, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddMemberForm)
 {
     ui->setupUi(this);
+    db = database;
     initializeModels();
     setupModels();
 }
@@ -57,17 +61,7 @@ void AddMemberForm::clearForm()
     ui->court_of_practice->clear();
 }
 
-AddMemberForm::~AddMemberForm()
-{
-    delete ui;
-}
-
-void AddMemberForm::on_reset_pushbutton_clicked()
-{
-    clearForm();
-}
-
-void AddMemberForm::on_addMember_pushbutton_clicked()
+bool AddMemberForm::addMember()
 {
     //gather data
     auto registration_number = ui->registration_number_spinbox->text();
@@ -91,4 +85,75 @@ void AddMemberForm::on_addMember_pushbutton_clicked()
     auto license_number      = ui->license_number->text();
     auto city_of_practice    = ui->city_of_practice->text();
     auto court_of_practice   = ui->court_of_practice->text();
+    auto merital_status      = ui->merital_status->currentText();
+
+    // prepare query
+    QSqlQuery q(*db);
+    q.prepare("INSERT INTO members(registration_no,name,"
+              "father_name,cnic,permanent_contact,"
+              "emergency_contact,permanent_address,"
+              "temporary_address,city,bloodgroup,"
+              "merital_status,guardian_of_member,"
+              "relation_with_member,cnic_of_guardian,"
+              "legal_study_status,year_of_study,institution,"
+              "session_of_degree,license_issuing_bar,licence_number,"
+              "city_of_practice,court_of_practice)"
+              " VALUES (:registration_no, :name, :father_name, :cnic, :"
+              "permanent_contact, :emergency_contact, :permanent_address, :"
+              "temporary_address, :city, :bloodgroup, :merital_status, :"
+              "guardian_of_member, :relation_with_member, :cnic_of_guardian, :"
+              "legal_study_status, :year_of_study, :institution, :session_of_degree, :"
+              "license_issuing_bar, :licence_number, :city_of_practice,"
+              " :court_of_practice)");
+    q.bindValue(":registration_no", registration_number);
+    q.bindValue(":name", name);
+    q.bindValue(":father_name", father);
+    q.bindValue(":cnic", cnic);
+    q.bindValue(":permanent_contact", permanent_contact);
+    q.bindValue(":emergency_contact", emergency_contact);
+    q.bindValue(":permanent_address", permanent_address);
+    q.bindValue(":temporary_address", temporary_address);
+    q.bindValue(":city", city);
+    q.bindValue(":bloodgroup", bloodgroup);
+    q.bindValue(":merital_status", merital_status);
+    q.bindValue(":guardian_of_member", guardian_name);
+    q.bindValue(":relation_with_member", relation_with_member);
+    q.bindValue(":cnic_of_guardian", cnic_of_guardian);
+    q.bindValue(":legal_study_status", legal_study_status);
+    q.bindValue(":year_of_study", year_of_study);
+    q.bindValue(":institution", institute);
+    q.bindValue(":session_of_degree", session_of_degree);
+    q.bindValue(":license_issuing_bar", license_issuing_bar);
+    q.bindValue(":licence_number", license_number);
+    q.bindValue(":city_of_practice", city_of_practice);
+    q.bindValue(":court_of_practice", court_of_practice);
+
+    // execute the query
+    if(!q.exec()){
+        QSqlError err = q.lastError();
+        QMessageBox::critical(this,"Error",err.text());
+        return false;
+    }
+    return true;
+}
+
+AddMemberForm::~AddMemberForm()
+{
+    delete ui;
+}
+
+void AddMemberForm::on_reset_pushbutton_clicked()
+{
+    clearForm();
+}
+
+void AddMemberForm::on_addMember_pushbutton_clicked()
+{
+    if (addMember()){
+        QMessageBox::information(this, "Member Added",
+                                 ui->name_lineedit->text()+" added successfully!!!");
+        clearForm();
+    } else {
+        QMessageBox::critical(this, "Error", "Could not add member to database");
+    }
 }

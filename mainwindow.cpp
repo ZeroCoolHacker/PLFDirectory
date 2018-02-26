@@ -22,7 +22,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAdd_triggered()
 {
-    AddMemberForm* form = new AddMemberForm();
+    AddMemberForm* form = new AddMemberForm(&db);
     form->showMaximized();
 }
 
