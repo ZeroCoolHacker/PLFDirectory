@@ -6,6 +6,10 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDir>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSortFilterProxyModel>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setupConnection();
+    members_model = new QSqlQueryModel();
+    member_search_proxy_model = new QSortFilterProxyModel();
+    setupMembersModel();
 }
 
 MainWindow::~MainWindow()
@@ -50,4 +57,56 @@ void MainWindow::setupConnection()
         ui->status->setText("Database Connected");
     else
         ui->status->setText("Database not connected");
+}
+
+void MainWindow::setupMembersModel()
+{
+    QSqlQuery q(db);
+    q.prepare("select registration_no,"
+              "name,cnic, city, bloodgroup"
+              ", session_of_degree from members");
+
+    if(!q.exec()){
+        QSqlError err = q.lastError();
+        QMessageBox::critical(this,"Error",
+                              "Couldn't load members Error:" + err.text());
+    }
+    members_model->setQuery(q);
+    member_search_proxy_model->setSourceModel(members_model);
+    ui->members_tableview->setModel(member_search_proxy_model);
+}
+
+void MainWindow::on_registrationsearch_lineedit_textChanged(const QString &arg1)
+{
+    member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    member_search_proxy_model->setFilterRegExp(arg1);
+    member_search_proxy_model->setFilterKeyColumn(0);
+}
+
+void MainWindow::on_namesearch_lineedit_textChanged(const QString &arg1)
+{
+    member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    member_search_proxy_model->setFilterRegExp(arg1);
+    member_search_proxy_model->setFilterKeyColumn(1);
+}
+
+void MainWindow::on_citysearch_lineedit_textChanged(const QString &arg1)
+{
+    member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    member_search_proxy_model->setFilterRegExp(arg1);
+    member_search_proxy_model->setFilterKeyColumn(3);
+}
+
+void MainWindow::on_sessionyearsearch_lineedit_textChanged(const QString &arg1)
+{
+    member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    member_search_proxy_model->setFilterRegExp(arg1);
+    member_search_proxy_model->setFilterKeyColumn(5);
+}
+
+void MainWindow::on_bloodgroupsearch_lineedit_textChanged(const QString &arg1)
+{
+    member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    member_search_proxy_model->setFilterRegExp(arg1);
+    member_search_proxy_model->setFilterKeyColumn(4);
 }
