@@ -6,7 +6,7 @@
 #include <QSqlError>
 #include <QMessageBox>
 
-AddMemberForm::AddMemberForm(QSqlDatabase *database, QWidget *parent) :
+AddMemberForm::AddMemberForm(QSqlDatabase *database, QString id, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddMemberForm)
 {
@@ -14,6 +14,10 @@ AddMemberForm::AddMemberForm(QSqlDatabase *database, QWidget *parent) :
     db = database;
     initializeModels();
     setupModels();
+    if (id != "null") {
+        disableForm();
+        loadUserData();
+    }
 }
 
 void AddMemberForm::initializeModels()
@@ -135,6 +139,27 @@ bool AddMemberForm::addMember()
         return false;
     }
     return true;
+}
+
+void AddMemberForm::disableForm()
+{
+    this->setEnabled(false);
+}
+
+void AddMemberForm::loadUserData()
+{
+    QSqlQuery q(*db);
+    q.prepare("select * from members where registration_no=:id");
+    q.bindValue(":id", id);
+
+    if(!q.exec()){
+        QSqlError err = q.lastError();
+        QMessageBox::critical(this,"Error",err.text());
+        return;
+    }
+    //get the data
+
+
 }
 
 AddMemberForm::~AddMemberForm()

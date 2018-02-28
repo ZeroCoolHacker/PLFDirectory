@@ -30,6 +30,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionAdd_triggered()
 {
     AddMemberForm* form = new AddMemberForm(&db);
+    setAttribute(Qt::WA_DeleteOnClose);
     form->showMaximized();
 }
 
@@ -109,4 +110,19 @@ void MainWindow::on_bloodgroupsearch_lineedit_textChanged(const QString &arg1)
     member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
     member_search_proxy_model->setFilterRegExp(arg1);
     member_search_proxy_model->setFilterKeyColumn(4);
+}
+
+void MainWindow::on_members_tableview_doubleClicked(const QModelIndex &index)
+{
+    if(!ui->members_tableview->currentIndex().isValid())
+        return;
+    QModelIndexList indexes = ui->members_tableview->
+            selectionModel()->selectedRows();
+    if(!indexes.at(0).isValid())
+        return;
+
+    QString id = indexes.at(0).data().toString();
+    AddMemberForm* detail = new AddMemberForm(&db,id);
+    detail->setAttribute(Qt::WA_DeleteOnClose);
+    detail->showMaximized();
 }

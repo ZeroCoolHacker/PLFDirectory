@@ -14,13 +14,15 @@ class AddMemberForm : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddMemberForm(QSqlDatabase* database,QWidget *parent = 0);
+    explicit AddMemberForm(QSqlDatabase* database,QString id="null", QWidget *parent = 0);
 
     void initializeModels();
     void setupModels();
     void setupMeritalStatusComboBoxModel();
     void clearForm();
     bool addMember();
+    void disableForm();
+    void loadUserData();
     ~AddMemberForm();
 
 private slots:
@@ -32,6 +34,7 @@ private:
     Ui::AddMemberForm *ui;
     QSqlDatabase* db;
     QStringListModel* merital_status_model;
+    QString id;
 };
 
 #endif // ADDMEMBEFORM_H

@@ -34,6 +34,8 @@ private slots:
 
     void on_bloodgroupsearch_lineedit_textChanged(const QString &arg1);
 
+    void on_members_tableview_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
