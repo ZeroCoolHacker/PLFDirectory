@@ -9,7 +9,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSortFilterProxyModel>
-
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -122,6 +122,7 @@ void MainWindow::on_members_tableview_doubleClicked(const QModelIndex &index)
         return;
 
     QString id = indexes.at(0).data().toString();
+    qDebug() << "Registration number passed : " << id;
     AddMemberForm* detail = new AddMemberForm(&db,id);
     detail->setAttribute(Qt::WA_DeleteOnClose);
     detail->showMaximized();
