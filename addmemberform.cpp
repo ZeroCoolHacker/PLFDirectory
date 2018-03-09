@@ -14,8 +14,10 @@ AddMemberForm::AddMemberForm(QSqlDatabase *database, QString registration_no, QW
 {
     ui->setupUi(this);
     db = database;
+    qDebug() << "ui setup complete";
     initializeModels();
     setupModels();
+    qDebug() << "All Models are setup properly";
     if (registration_no != "null") {
         id = registration_no;
         disableForm();
@@ -25,11 +27,9 @@ AddMemberForm::AddMemberForm(QSqlDatabase *database, QString registration_no, QW
 
 void AddMemberForm::initializeModels()
 {
-    if (merital_status_model == 0) {
-        QStringList status;
-        status << "Married" << "Single" << "Widowed";
-        merital_status_model = new QStringListModel(status);
-    }
+    QStringList status;
+    status << "Married" << "Single" << "Widowed";
+    merital_status_model = new QStringListModel(status);
 }
 
 void AddMemberForm::setupModels()
