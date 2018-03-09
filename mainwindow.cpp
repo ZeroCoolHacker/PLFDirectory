@@ -17,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setupConnection();
-    members_model = new QSqlQueryModel();
-    member_search_proxy_model = new QSortFilterProxyModel();
     setupMembersModel();
 }
 
@@ -30,8 +28,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionAdd_triggered()
 {
     AddMemberForm* form = new AddMemberForm(&db);
-    setAttribute(Qt::WA_DeleteOnClose);
-    form->showMaximized();
+//    setAttribute(Qt::WA_DeleteOnClose);
+    form->exec();
 }
 
 
@@ -124,6 +122,11 @@ void MainWindow::on_members_tableview_doubleClicked(const QModelIndex &index)
     QString id = indexes.at(0).data().toString();
     qDebug() << "Registration number passed : " << id;
     AddMemberForm* detail = new AddMemberForm(&db,id);
-    detail->setAttribute(Qt::WA_DeleteOnClose);
-    detail->showMaximized();
+//    detail->setAttribute(Qt::WA_DeleteOnClose);
+    detail->exec();
+}
+
+void MainWindow::on_refresh_list_pushbutton_clicked()
+{
+    setupMembersModel();
 }

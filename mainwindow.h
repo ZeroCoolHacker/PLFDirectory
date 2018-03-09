@@ -36,11 +36,13 @@ private slots:
 
     void on_members_tableview_doubleClicked(const QModelIndex &index);
 
+    void on_refresh_list_pushbutton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
-    QSqlQueryModel* members_model;
-    QSortFilterProxyModel* member_search_proxy_model;
+    QSqlQueryModel* members_model = new QSqlQueryModel();
+    QSortFilterProxyModel* member_search_proxy_model = new QSortFilterProxyModel();
 };
 
 #endif // MAINWINDOW_H
