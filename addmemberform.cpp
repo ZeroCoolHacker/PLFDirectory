@@ -146,7 +146,28 @@ bool AddMemberForm::addMember()
 
 void AddMemberForm::disableForm()
 {
-    this->setEnabled(false);
+    ui->registration_number_spinbox->setReadOnly(true);
+    ui->name_lineedit->setReadOnly(true);
+    ui->father_name_lineedit->setReadOnly(true);
+    ui->cnic_lineedit->setReadOnly(true);
+    ui->permanent_contact->setReadOnly(true);
+    ui->emergency_contact->setReadOnly(true);
+    ui->permanent_address_lineedit->setReadOnly(true);
+    ui->temporary_address->setReadOnly(true);
+    ui->city_lineedit->setReadOnly(true);
+    ui->bloodgroup->setReadOnly(true);
+    ui->merital_status->currentText();
+    ui->guardian_name->setReadOnly(true);
+    ui->relation_with_member->setReadOnly(true);
+    ui->cnic_of_guardian->setReadOnly(true);
+    ui->legal_study_status->setReadOnly(true);
+    ui->year_of_study->setReadOnly(true);
+    ui->institute_name->setReadOnly(true);
+    ui->session_of_degree->setReadOnly(true);
+    ui->license_issuing_bar->setReadOnly(true);
+    ui->license_number->setReadOnly(true);
+    ui->city_of_practice->setReadOnly(true);
+    ui->court_of_practice->setReadOnly(true);
 }
 
 void AddMemberForm::loadUserData()
