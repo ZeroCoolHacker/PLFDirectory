@@ -10,8 +10,48 @@
     <height>737</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Calibri</family>
+    <pointsize>16</pointsize>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Add Member</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLineEdit,QLabel, QSpinBox, QComboBox {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 3px solid #ccc;
+    outline: none;
+	selection-color: rgb(170, 170, 127);
+	font: 75 16pt &quot;Calibri&quot;;
+}
+
+QLabel {
+	
+	background-color: rgb(238, 238, 238);
+	font: 75 18pt &quot;Calibri&quot;;
+}
+
+QPushButton {
+position: relative;
+	padding: 5px 20px;
+  margin: 0px 10px 10px 0px;
+  float: left;
+	border-radius: 10px;
+	font-family: 'Pacifico', cursive;
+	font-size: 25px;
+	color: #FFF;
+	text-decoration: none;
+background-color: #3498DB;
+	border-bottom: 5px solid #2980B9;
+}
+</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -37,8 +77,8 @@ color: rgb(85, 170, 255)</string>
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>814</width>
-          <height>653</height>
+          <width>797</width>
+          <height>1776</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
@@ -272,6 +312,9 @@ color: rgb(85, 170, 255)</string>
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <item>
               <widget class="QSpinBox" name="registration_number_spinbox">
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
                <property name="maximum">
                 <number>999999999</number>
                </property>
@@ -359,6 +402,11 @@ color: rgb(85, 170, 255)</string>
        </item>
        <item>
         <widget class="QPushButton" name="reset_pushbutton">
+         <property name="styleSheet">
+          <string notr="true">background-color: #F2CF66;
+	border-bottom: 5px solid #D1B358;
+	text-shadow: 0px -2px #D1B358;</string>
+         </property>
          <property name="text">
           <string>Reset</string>
          </property>
