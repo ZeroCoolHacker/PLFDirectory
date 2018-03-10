@@ -68,12 +68,16 @@ color: rgb(85, 170, 255)</string>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="sessionyearsearch_lineedit">
-        <property name="text">
-         <string/>
-        </property>
+       <widget class="QLineEdit" name="collegesearch_lineedit">
         <property name="placeholderText">
-         <string>Session Year</string>
+         <string>College</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="practicing_court_lineedit">
+        <property name="placeholderText">
+         <string>Practicing Court</string>
         </property>
        </widget>
       </item>

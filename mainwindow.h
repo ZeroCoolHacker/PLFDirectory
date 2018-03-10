@@ -30,13 +30,16 @@ private slots:
 
     void on_citysearch_lineedit_textChanged(const QString &arg1);
 
-    void on_sessionyearsearch_lineedit_textChanged(const QString &arg1);
 
     void on_bloodgroupsearch_lineedit_textChanged(const QString &arg1);
 
     void on_members_tableview_doubleClicked(const QModelIndex &index);
 
     void on_refresh_list_pushbutton_clicked();
+
+    void on_collegesearch_lineedit_textChanged(const QString &arg1);
+
+    void on_practicing_court_lineedit_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
