@@ -70,6 +70,10 @@ void AddMemberForm::clearForm()
 
 bool AddMemberForm::addMember()
 {
+    if (isAnyFieldEmpty()){
+        QMessageBox::information(this,"Incomplete Form", "Fill the empty fields");
+        return false;
+    }
     //gather data
     auto registration_number = ui->registration_number_spinbox->text();
     auto name                = ui->name_lineedit->text();
@@ -182,7 +186,7 @@ void AddMemberForm::loadUserData()
         return;
     }
     //get the data
-    while (q.next()){
+    if (q.first()){
         auto name                = q.value(q.record().indexOf("name")).toString();
         auto father              = q.value(q.record().indexOf("father_name")).toString();
         auto cnic                = q.value(q.record().indexOf("cnic")).toString();
@@ -229,6 +233,33 @@ void AddMemberForm::loadUserData()
         ui->court_of_practice->setText(court_of_practice);
         ui->merital_status->setCurrentText(merital_status);
     }
+}
+
+bool AddMemberForm::isAnyFieldEmpty()
+{
+    if (ui->name_lineedit->text().isEmpty() ||
+            ui->father_name_lineedit->text().isEmpty()
+            || ui->cnic_lineedit->text().isEmpty()
+            || ui->permanent_contact->text().isEmpty()
+            || ui->emergency_contact->text().isEmpty()
+            || ui->permanent_address_lineedit->text().isEmpty()
+            || ui->temporary_address->text().isEmpty()
+            || ui->city_lineedit->text().isEmpty()
+            || ui->bloodgroup->text().isEmpty()
+            || ui->merital_status->currentText().isEmpty()
+            || ui->guardian_name->text().isEmpty()
+            || ui->relation_with_member->text().isEmpty()
+            || ui->cnic_of_guardian->text().isEmpty()
+            || ui->legal_study_status->text().isEmpty()
+            || ui->year_of_study->text().isEmpty()
+            || ui->institute_name->text().isEmpty()
+            || ui->session_of_degree->text().isEmpty()
+            || ui->license_issuing_bar->text().isEmpty()
+            || ui->license_number->text().isEmpty()
+            || ui->city_of_practice->text().isEmpty()
+            || ui->court_of_practice->text().isEmpty())
+        return true;
+    return false;
 }
 
 AddMemberForm::~AddMemberForm()

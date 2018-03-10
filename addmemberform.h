@@ -23,6 +23,7 @@ public:
     bool addMember();
     void disableForm();
     void loadUserData();
+    bool isAnyFieldEmpty();
     ~AddMemberForm();
 
 private slots:

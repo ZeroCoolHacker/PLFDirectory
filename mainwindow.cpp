@@ -33,7 +33,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionAdd_triggered()
 {
     if (user->type() != "standard"){
-        AddMemberForm* form = new AddMemberForm(&db);
+        AddMemberForm* form = new AddMemberForm(&db, "null", this);
     //    setAttribute(Qt::WA_DeleteOnClose);
         form->exec();
     } else {
@@ -130,7 +130,7 @@ void MainWindow::on_members_tableview_doubleClicked(const QModelIndex &index)
 
     QString id = indexes.at(0).data().toString();
     qDebug() << "Registration number passed : " << id;
-    AddMemberForm* detail = new AddMemberForm(&db,id);
+    AddMemberForm* detail = new AddMemberForm(&db,id, this);
 //    detail->setAttribute(Qt::WA_DeleteOnClose);
     detail->exec();
 }
@@ -156,6 +156,6 @@ void MainWindow::on_practicing_court_lineedit_textChanged(const QString &arg1)
 
 void MainWindow::on_actionUsers_triggered()
 {
-    UsersDialog *dialog = new UsersDialog(&db);
+    UsersDialog *dialog = new UsersDialog(&db, this);
     dialog->exec();
 }

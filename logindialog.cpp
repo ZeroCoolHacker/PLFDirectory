@@ -61,6 +61,7 @@ void LoginDialog::setupConnection()
 
 void LoginDialog::login(User *user)
 {
+    db.close();
     MainWindow *w = new MainWindow(user, this);
     w->show();
     this->hide();
