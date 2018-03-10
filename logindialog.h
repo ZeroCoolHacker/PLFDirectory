@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QtSql>
+#include "user.h"
+
 
 namespace Ui {
 class LoginDialog;
@@ -17,7 +19,7 @@ public:
 
     bool checkLicence();
     void setupConnection();
-    void login();
+    void login(User *user);
 
     ~LoginDialog();
 

@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
 #include <QSortFilterProxyModel>
-
+#include "user.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,7 +16,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(User *user_logged_in, QWidget *parent = 0);
     void setupConnection();
     void setupMembersModel();
     ~MainWindow();
@@ -41,11 +41,14 @@ private slots:
 
     void on_practicing_court_lineedit_textChanged(const QString &arg1);
 
+    void on_actionUsers_triggered();
+
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
     QSqlQueryModel* members_model = new QSqlQueryModel();
     QSortFilterProxyModel* member_search_proxy_model = new QSortFilterProxyModel();
+    User *user;
 };
 
 #endif // MAINWINDOW_H

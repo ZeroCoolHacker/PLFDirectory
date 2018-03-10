@@ -10,12 +10,17 @@
 #include <QSqlError>
 #include <QSortFilterProxyModel>
 #include <QDebug>
+#include "usersdialog.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(User *user_logged_in, QWidget *parent) :
     QMainWindow(parent),
+    user(user_logged_in),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->statusBar->addPermanentWidget(ui->status);
+    ui->statusBar->addPermanentWidget(ui->user_label);
+    ui->user_label->setText(user->username()+" logged in,");
     setupConnection();
     setupMembersModel();
 }
@@ -27,9 +32,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAdd_triggered()
 {
-    AddMemberForm* form = new AddMemberForm(&db);
-//    setAttribute(Qt::WA_DeleteOnClose);
-    form->exec();
+    if (user->type() != "standard"){
+        AddMemberForm* form = new AddMemberForm(&db);
+    //    setAttribute(Qt::WA_DeleteOnClose);
+        form->exec();
+    } else {
+        QMessageBox::warning(this, "Access Denied!",
+                             "You do not have permission to add  new member.");
+    }
 }
 
 
@@ -142,4 +152,10 @@ void MainWindow::on_practicing_court_lineedit_textChanged(const QString &arg1)
     member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
     member_search_proxy_model->setFilterRegExp(arg1);
     member_search_proxy_model->setFilterKeyColumn(6);
+}
+
+void MainWindow::on_actionUsers_triggered()
+{
+    UsersDialog *dialog = new UsersDialog(&db);
+    dialog->exec();
 }
