@@ -10,12 +10,17 @@
 #include <QSqlError>
 #include <QSortFilterProxyModel>
 #include <QDebug>
+#include "usersdialog.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(User *user_logged_in, QWidget *parent) :
     QMainWindow(parent),
+    user(user_logged_in),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->statusBar->addPermanentWidget(ui->status);
+    ui->statusBar->addPermanentWidget(ui->user_label);
+    ui->user_label->setText(user->username()+" logged in,");
     setupConnection();
     setupMembersModel();
 }
@@ -27,9 +32,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAdd_triggered()
 {
-    AddMemberForm* form = new AddMemberForm(&db);
-//    setAttribute(Qt::WA_DeleteOnClose);
-    form->exec();
+    if (user->type() != "standard"){
+        AddMemberForm* form = new AddMemberForm(&db, "null", this);
+    //    setAttribute(Qt::WA_DeleteOnClose);
+        form->exec();
+    } else {
+        QMessageBox::warning(this, "Access Denied!",
+                             "You do not have permission to add  new member.");
+    }
 }
 
 
@@ -63,7 +73,7 @@ void MainWindow::setupMembersModel()
     QSqlQuery q(db);
     q.prepare("select registration_no,"
               "name,cnic, city, bloodgroup"
-              ", session_of_degree from members");
+              ", institution, court_of_practice from members");
 
     if(!q.exec()){
         QSqlError err = q.lastError();
@@ -73,6 +83,11 @@ void MainWindow::setupMembersModel()
     members_model->setQuery(q);
     member_search_proxy_model->setSourceModel(members_model);
     ui->members_tableview->setModel(member_search_proxy_model);
+    ui->members_tableview->hideColumn(2);
+    ui->members_tableview->hideColumn(3);
+    ui->members_tableview->hideColumn(4);
+    ui->members_tableview->hideColumn(5);
+    ui->members_tableview->hideColumn(6);
 }
 
 void MainWindow::on_registrationsearch_lineedit_textChanged(const QString &arg1)
@@ -96,12 +111,6 @@ void MainWindow::on_citysearch_lineedit_textChanged(const QString &arg1)
     member_search_proxy_model->setFilterKeyColumn(3);
 }
 
-void MainWindow::on_sessionyearsearch_lineedit_textChanged(const QString &arg1)
-{
-    member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    member_search_proxy_model->setFilterRegExp(arg1);
-    member_search_proxy_model->setFilterKeyColumn(5);
-}
 
 void MainWindow::on_bloodgroupsearch_lineedit_textChanged(const QString &arg1)
 {
@@ -121,7 +130,7 @@ void MainWindow::on_members_tableview_doubleClicked(const QModelIndex &index)
 
     QString id = indexes.at(0).data().toString();
     qDebug() << "Registration number passed : " << id;
-    AddMemberForm* detail = new AddMemberForm(&db,id);
+    AddMemberForm* detail = new AddMemberForm(&db,id, this);
 //    detail->setAttribute(Qt::WA_DeleteOnClose);
     detail->exec();
 }
@@ -129,4 +138,24 @@ void MainWindow::on_members_tableview_doubleClicked(const QModelIndex &index)
 void MainWindow::on_refresh_list_pushbutton_clicked()
 {
     setupMembersModel();
+}
+
+void MainWindow::on_collegesearch_lineedit_textChanged(const QString &arg1)
+{
+    member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    member_search_proxy_model->setFilterRegExp(arg1);
+    member_search_proxy_model->setFilterKeyColumn(5);
+}
+
+void MainWindow::on_practicing_court_lineedit_textChanged(const QString &arg1)
+{
+    member_search_proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    member_search_proxy_model->setFilterRegExp(arg1);
+    member_search_proxy_model->setFilterKeyColumn(6);
+}
+
+void MainWindow::on_actionUsers_triggered()
+{
+    UsersDialog *dialog = new UsersDialog(&db, this);
+    dialog->exec();
 }

@@ -5,6 +5,8 @@
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
+#include "user.h"
+
 
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
@@ -57,10 +59,12 @@ void LoginDialog::setupConnection()
         ui->status->setText("Database not connected");
 }
 
-void LoginDialog::login()
+void LoginDialog::login(User *user)
 {
-    MainWindow *w = new MainWindow(this);
+    db.close();
+    MainWindow *w = new MainWindow(user, this);
     w->show();
+    this->hide();
 }
 
 LoginDialog::~LoginDialog()
@@ -79,9 +83,10 @@ void LoginDialog::on_pushButton_clicked()
     q.bindValue(1,password);
     if(q.exec())
         if(q.next()){
-            int field = q.record().indexOf("username");
-            ui->status->setText(q.value(field).toString()+" Logged in");
-            login();
+            int field = q.record().indexOf("type");
+            QString account_type = q.value(field).toString();
+            User *user = new User(username, account_type);
+            login(user);
         }
         else
             ui->status->setText(username + " not found");

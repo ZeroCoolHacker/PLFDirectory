@@ -68,12 +68,16 @@ color: rgb(85, 170, 255)</string>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="sessionyearsearch_lineedit">
-        <property name="text">
-         <string/>
-        </property>
+       <widget class="QLineEdit" name="collegesearch_lineedit">
         <property name="placeholderText">
-         <string>Session Year</string>
+         <string>College</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="practicing_court_lineedit">
+        <property name="placeholderText">
+         <string>Practicing Court</string>
         </property>
        </widget>
       </item>
@@ -90,6 +94,12 @@ color: rgb(85, 170, 255)</string>
       <property name="sortingEnabled">
        <bool>true</bool>
       </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
      </widget>
     </item>
     <item row="3" column="0">
@@ -98,6 +108,13 @@ color: rgb(85, 170, 255)</string>
        <widget class="QLabel" name="status">
         <property name="text">
          <string>status</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="user_label">
+        <property name="text">
+         <string>user</string>
         </property>
        </widget>
       </item>
@@ -132,19 +149,9 @@ color: rgb(85, 170, 255)</string>
      <string>Registration</string>
     </property>
     <addaction name="actionAdd"/>
-   </widget>
-   <widget class="QMenu" name="menuSearch">
-    <property name="title">
-     <string>Search</string>
-    </property>
-    <addaction name="actionBy_Name"/>
-    <addaction name="actionBy_Blood_Group"/>
-    <addaction name="actionBy_Registration_Number"/>
-    <addaction name="actionBy_City"/>
-    <addaction name="actionBy_Session_year"/>
+    <addaction name="actionUsers"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuSearch"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -183,6 +190,11 @@ color: rgb(85, 170, 255)</string>
   <action name="actionBy_Session_year">
    <property name="text">
     <string>By Session year</string>
+   </property>
+  </action>
+  <action name="actionUsers">
+   <property name="text">
+    <string>Users</string>
    </property>
   </action>
  </widget>

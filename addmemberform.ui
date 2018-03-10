@@ -405,7 +405,7 @@ color: rgb(85, 170, 255)</string>
          <property name="styleSheet">
           <string notr="true">background-color: #F2CF66;
 	border-bottom: 5px solid #D1B358;
-	text-shadow: 0px -2px #D1B358;</string>
+</string>
          </property>
          <property name="text">
           <string>Reset</string>
