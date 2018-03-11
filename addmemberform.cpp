@@ -172,6 +172,9 @@ void AddMemberForm::disableForm()
     ui->license_number->setReadOnly(true);
     ui->city_of_practice->setReadOnly(true);
     ui->court_of_practice->setReadOnly(true);
+    //hide buttons
+    ui->addMember_pushbutton->hide();
+    ui->reset_pushbutton->hide();
 }
 
 void AddMemberForm::loadUserData()
