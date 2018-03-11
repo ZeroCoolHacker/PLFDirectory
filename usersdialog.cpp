@@ -6,7 +6,7 @@
 #include "user.h"
 #include <QStringListModel>
 #include <QStringList>
-
+#include <QDebug>
 UsersDialog::UsersDialog(QSqlDatabase *database, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UsersDialog)
@@ -66,8 +66,11 @@ void UsersDialog::on_addaccount_pushButton_clicked()
     user->setPassword(password);
     //prepare the query
     QSqlQuery q(*db);
-    q.prepare("insert into users (username, password, type)"
-              " values (:username, :password, :type); ");
+    q.prepare("insert into users(type, username, password)"
+              " values (:type, :username, :password); ");
+    q.bindValue(":type", user->type());
+    q.bindValue(":username", user->username());
+    q.bindValue(":password", user->password());
     if (!q.exec()){
         QMessageBox::warning(this, "Failed",
                              "Could not add user into database"
