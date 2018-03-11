@@ -92,4 +92,23 @@ void UsersDialog::on_removeaccount_pushButton_2_clicked()
 
     QString id = indexes.at(0).data().toString();
     qDebug() << "Account Id : " << id;
+    //confirms from the user
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,"Are You Sure?\n",
+                                  "You can not undo this action."
+                                  "Do you want to continue?",
+                                  QMessageBox::Yes | QMessageBox::Cancel);
+    //if the user accepts the dialog
+    if(reply == QMessageBox::Yes){
+        QSqlQuery q(*db);
+        q.prepare("delete from users where id=:id");
+        q.bindValue(":id", id);
+        if (!q.exec()){
+            QMessageBox::warning(this, "Failed",
+                                 "Could not remove the user"
+                                 " due to error : " + q.lastError().text());
+                    return;
+        }
+        setupModel();
+    }
 }
