@@ -17,12 +17,15 @@ public:
     void setType(const QString &type);
 
 
+    QString password() const;
+    void setPassword(const QString &password);
+
 signals:
 
 public slots:
 
 private:
-    QString _username, _type;
+    QString _username,_password, _type;
     enum ACCOUNT_TYPE  {
         ADMIN, MANAGER, STANDARD
     };

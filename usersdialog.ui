@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>599</width>
+    <width>701</width>
     <height>387</height>
    </rect>
   </property>
@@ -15,7 +15,14 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <widget class="QTableView" name="users_tableview"/>
+    <widget class="QTableView" name="users_tableview">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+    </widget>
    </item>
    <item row="0" column="1">
     <widget class="QGroupBox" name="groupBox">
@@ -56,10 +63,14 @@
            <widget class="QLineEdit" name="username_lineedit"/>
           </item>
           <item>
-           <widget class="QLineEdit" name="password_lineedit"/>
+           <widget class="QLineEdit" name="password_lineedit">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="accounttype_lineedit"/>
+           <widget class="QComboBox" name="accout_type_combobox"/>
           </item>
          </layout>
         </item>
