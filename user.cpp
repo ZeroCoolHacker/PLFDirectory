@@ -25,3 +25,13 @@ void User::setType(const QString &type)
 {
     _type = type;
 }
+
+QString User::password() const
+{
+    return _password;
+}
+
+void User::setPassword(const QString &password)
+{
+    _password = password;
+}

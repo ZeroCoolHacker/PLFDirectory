@@ -16,7 +16,13 @@ class UsersDialog : public QDialog
 public:
     explicit UsersDialog(QSqlDatabase *database, QWidget *parent = 0);
     void setupModel();
+    bool isAnyFieldEmpty();
     ~UsersDialog();
+
+private slots:
+    void on_addaccount_pushButton_clicked();
+
+    void on_removeaccount_pushButton_2_clicked();
 
 private:
     Ui::UsersDialog *ui;

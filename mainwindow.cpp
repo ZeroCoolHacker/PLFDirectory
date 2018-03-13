@@ -156,6 +156,12 @@ void MainWindow::on_practicing_court_lineedit_textChanged(const QString &arg1)
 
 void MainWindow::on_actionUsers_triggered()
 {
-    UsersDialog *dialog = new UsersDialog(&db, this);
-    dialog->exec();
+    if (user->type() == "admin"){
+        UsersDialog *dialog = new UsersDialog(&db, this);
+        dialog->setModal(true);
+        dialog->exec();
+    } else {
+        QMessageBox::warning(this, "Access Denied!",
+                             "You don't have access to access this information");
+    }
 }
