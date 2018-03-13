@@ -31,6 +31,9 @@ private slots:
 
     void on_addMember_pushbutton_clicked();
 
+
+    void on_upload_button_toolbutton_clicked();
+
 private:
     Ui::AddMemberForm *ui;
     QSqlDatabase* db;

@@ -7,6 +7,12 @@
 #include <QMessageBox>
 #include <QSqlRecord>
 #include <QDebug>
+#include <QFile>
+#include <QFileDialog>
+#include <QByteArray>
+#include <QPixmap>
+#include <QBitmap>
+#include <QSize>
 
 AddMemberForm::AddMemberForm(QSqlDatabase *database, QString registration_no, QWidget *parent) :
     QDialog(parent),
@@ -284,4 +290,16 @@ void AddMemberForm::on_addMember_pushbutton_clicked()
     } else {
         QMessageBox::critical(this, "Error", "Could not add member to database");
     }
+}
+
+void AddMemberForm::on_upload_button_toolbutton_clicked()
+{
+    QString path = QFileDialog::getOpenFileName(this,"Select Image",QDir::currentPath(), tr("Images (*.png *.jpeg *.jpg)"));
+    QPixmap pic(path);
+    pic = pic.scaled(QSize(ui->image_label->width(),
+                           ui->image_label->height()),Qt::IgnoreAspectRatio,
+                     Qt::SmoothTransformation);
+    ui->image_label->setPixmap(pic);
+    ui->image_label->setMask(pic.mask());
+    ui->image_label->update();
 }
