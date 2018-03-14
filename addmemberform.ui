@@ -90,7 +90,7 @@ color: rgb(85, 170, 255)</string>
 color: rgb(85, 170, 255)</string>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Upload&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Photo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;150*150&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Photo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>

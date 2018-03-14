@@ -24,6 +24,7 @@ public:
     void disableForm();
     void loadUserData();
     bool isAnyFieldEmpty();
+    void loadNewRegistrationNumber();
     ~AddMemberForm();
 
 private slots:

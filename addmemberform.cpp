@@ -41,6 +41,7 @@ void AddMemberForm::initializeModels()
 void AddMemberForm::setupModels()
 {
   setupMeritalStatusComboBoxModel();
+  loadNewRegistrationNumber();
 }
 
 void AddMemberForm::setupMeritalStatusComboBoxModel()
@@ -287,6 +288,23 @@ bool AddMemberForm::isAnyFieldEmpty()
             || ui->court_of_practice->text().isEmpty())
         return true;
     return false;
+}
+
+void AddMemberForm::loadNewRegistrationNumber()
+{
+    QSqlQuery q(*db);
+    q.prepare("select max(registration_no) from members");
+    if(!q.exec()){
+        QMessageBox::warning(this, "Registration number",
+                             "Could not load the new registeration number."
+                             " Enter it mannually");
+        ui->registration_number_spinbox->setReadOnly(false);
+        return;
+    }
+    q.first();
+    qint64  reg_no=   q.value(0).toLongLong()+1;
+    ui->registration_number_spinbox->setValue(reg_no);
+    ui->registration_number_spinbox->setReadOnly(true);
 }
 
 AddMemberForm::~AddMemberForm()
