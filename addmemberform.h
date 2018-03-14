@@ -28,10 +28,7 @@ public:
 
 private slots:
     void on_reset_pushbutton_clicked();
-
     void on_addMember_pushbutton_clicked();
-
-
     void on_upload_button_toolbutton_clicked();
 
 private:
@@ -39,6 +36,7 @@ private:
     QSqlDatabase* db;
     QStringListModel* merital_status_model;
     QString id;
+    QString picpath;
 };
 
 #endif // ADDMEMBEFORM_H

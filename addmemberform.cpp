@@ -103,6 +103,13 @@ bool AddMemberForm::addMember()
     auto city_of_practice    = ui->city_of_practice->text();
     auto court_of_practice   = ui->court_of_practice->text();
     auto merital_status      = ui->merital_status->currentText();
+    QFile file(picpath);
+    if (!file.open(QIODevice::ReadOnly)){
+        QMessageBox::critical(this,"Error",
+                              "can not load the image " + picpath);
+        return false;
+    }
+    QByteArray inByteArray = file.readAll();
 
     // prepare query
     QSqlQuery q(*db);
@@ -114,14 +121,14 @@ bool AddMemberForm::addMember()
               "relation_with_member,cnic_of_guardian,"
               "legal_study_status,year_of_study,institution,"
               "session_of_degree,license_issuing_bar,licence_number,"
-              "city_of_practice,court_of_practice)"
+              "city_of_practice,court_of_practice, image)"
               " VALUES (:registration_no, :name, :father_name, :cnic, :"
               "permanent_contact, :emergency_contact, :permanent_address, :"
               "temporary_address, :city, :bloodgroup, :merital_status, :"
               "guardian_of_member, :relation_with_member, :cnic_of_guardian, :"
               "legal_study_status, :year_of_study, :institution, :session_of_degree, :"
               "license_issuing_bar, :licence_number, :city_of_practice,"
-              " :court_of_practice)");
+              " :court_of_practice, :image)");
     q.bindValue(":registration_no", registration_number);
     q.bindValue(":name", name);
     q.bindValue(":father_name", father);
@@ -144,6 +151,7 @@ bool AddMemberForm::addMember()
     q.bindValue(":licence_number", license_number);
     q.bindValue(":city_of_practice", city_of_practice);
     q.bindValue(":court_of_practice", court_of_practice);
+    q.bindValue(":image", inByteArray);
 
     // execute the query
     if(!q.exec()){
@@ -180,6 +188,7 @@ void AddMemberForm::disableForm()
     ui->court_of_practice->setReadOnly(true);
     //hide buttons
     ui->addMember_pushbutton->hide();
+    ui->upload_button_toolbutton->hide();
     ui->reset_pushbutton->hide();
 }
 
@@ -217,8 +226,17 @@ void AddMemberForm::loadUserData()
         auto city_of_practice    = q.value(q.record().indexOf("city_of_practice")).toString();
         auto court_of_practice   = q.value(q.record().indexOf("court_of_practice")).toString();
         auto merital_status      = q.value(q.record().indexOf("merital_status")).toString();
+        QByteArray outByteArray  = q.value(q.record().indexOf("image")).toByteArray();
+        QPixmap outPixmap = QPixmap();
+        outPixmap.loadFromData( outByteArray );
+        outPixmap.scaled(QSize(ui->image_label->width(),
+                               ui->image_label->height()),Qt::IgnoreAspectRatio,
+                         Qt::SmoothTransformation);
+        ui->image_label->setMask(outPixmap.mask());
         qDebug() << name << father << merital_status ;
         // display data
+        ui->image_label->setPixmap(outPixmap);
+        ui->image_label->update();
         ui->registration_number_spinbox->setValue(id.toLongLong());
         ui->name_lineedit->setText(name);
         ui->father_name_lineedit->setText(father);
@@ -294,8 +312,9 @@ void AddMemberForm::on_addMember_pushbutton_clicked()
 
 void AddMemberForm::on_upload_button_toolbutton_clicked()
 {
-    QString path = QFileDialog::getOpenFileName(this,"Select Image",QDir::currentPath(), tr("Images (*.png *.jpeg *.jpg)"));
-    QPixmap pic(path);
+    picpath = QFileDialog::getOpenFileName(this,"Select Image",QDir::currentPath(), tr("Images (*.png *.jpeg *.jpg)"));
+    QPixmap pic(picpath);
+
     pic = pic.scaled(QSize(ui->image_label->width(),
                            ui->image_label->height()),Qt::IgnoreAspectRatio,
                      Qt::SmoothTransformation);
